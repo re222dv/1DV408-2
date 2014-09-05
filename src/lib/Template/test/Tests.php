@@ -16,8 +16,10 @@ $renderedPage = <<<PAGE
     </head>
     <body>
         Hello, World!
+
     </body>
 </html>
+
 PAGE;
 
 class Tests extends \PHPUnit_Framework_TestCase {
@@ -26,6 +28,24 @@ class Tests extends \PHPUnit_Framework_TestCase {
         global $renderedPage;
         $page = new Layout(new Content());
         $this->assertEquals($renderedPage, $page->render());
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Template file '' don't exists
+     */
+    public function test_throw_when_template_not_set() {
+        $page = new NoTemplate();
+        $page->render();
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Template file 'not-found.html' don't exists
+     */
+    public function test_throw_when_template_not_found() {
+        $page = new NotFoundTemplate();
+        $page->render();
     }
 }
 
@@ -42,5 +62,12 @@ class Content extends View {
     public function __construct() {
         $this->template = 'content.html';
         $this->setVariable('message', 'Hello, World!');
+    }
+}
+
+class NoTemplate extends View {}
+class NotFoundTemplate extends View {
+    public function __construct() {
+        $this->template = 'not-found.html';
     }
 }
