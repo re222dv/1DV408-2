@@ -68,7 +68,11 @@ abstract class View {
         preg_match_all(VARIABLE_REGEX, $output, $variableMatches, PREG_SET_ORDER);
 
         foreach($variableMatches as $match) {
-            $output = str_replace($match[0], $this->variables[$match[1]], $output);
+            $variable = $this->variables[$match[1]];
+            $variable = str_replace('<', '&lt;', $variable);
+            $variable = str_replace('>', '&gt;', $variable);
+            $variable = str_replace('"', '&quot;', $variable);
+            $output = str_replace($match[0], $variable, $output);
         }
 
         return $output;

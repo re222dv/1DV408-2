@@ -22,6 +22,21 @@ $renderedPage = <<<PAGE
 
 PAGE;
 
+global $renderedPageXSS;
+$renderedPageXSS = <<<PAGE
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test</title>
+    </head>
+    <body>
+        &lt;script type=&quot;application/javascript&quot;&gt;alert('hej')&lt;/script&gt;
+
+    </body>
+</html>
+
+PAGE;
+
 class Tests extends \PHPUnit_Framework_TestCase {
 
     public function test_render() {
@@ -46,6 +61,15 @@ class Tests extends \PHPUnit_Framework_TestCase {
     public function test_throw_when_template_not_found() {
         $page = new NotFoundTemplate();
         $page->render();
+    }
+
+    public function test_variable_insertion_is_xss_proof() {
+        global $renderedPageXSS;
+        $content = new Content();
+        $content->setVariable('message',
+                              '<script type="application/javascript">alert(\'hej\')</script>');
+        $page = new Layout($content);
+        $this->assertEquals($renderedPageXSS, $page->render());
     }
 }
 
