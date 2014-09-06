@@ -10,14 +10,33 @@ namespace Template;
  * and may contains lower case, upper case and numbers. It may be
  * surrounded by a single space.
  */
-const VARIABLE_REGEX = '{{{(?: )?([a-z][a-zA-Z0-9]*?)(?: )?}}}';
+const VARIABLE_REGEX = '{{{ ?([a-z][a-zA-Z0-9]*?) ?}}}';
+
 /**
- * Matches sub view insertion points.
+ * Matches inline directives
  *
- * A sub view insertion point follows the schema {% view $name %}
- * where $name is the name of the sub view.
+ * An inline directive does only have a header that contains the name
+ * of the directive and an optional list of space separated arguments.
+ *
+ * Example:
+ *  {% view content %}
  */
-const SUB_VIEW_REGEX = '{{%(?: )?view ([a-z][a-zA-Z0-9]*?)(?: )?%}}';
+const INLINE_DIRECTIVE_REGEX = '/{% ?([a-z][a-zA-Z0-9]*)((?: [^ ]*)*?) ?%}/';
+
+/**
+ * Matches block directives
+ *
+ * A block directive a header and a body. The header contains the name
+ * of the directive and an optional list of space separated arguments.
+ * The header is ended with a colon (:) and after that the body starts
+ * and ends at the closing tag (?}).
+ *
+ * Example:
+ *  {? if loggedIn:
+ *     Hello, {{ userName }}!
+ *  ?}
+ */
+const BLOCK_DIRECTIVE_REGEX = '/({\? ?([a-z][a-zA-Z0-9]*)((?: ?[^ :]*)+) ?:)((?:(?!(?1)|(\?})).|(?R))*)\?}/s';
 
 /**
  * This is a base class for views.
@@ -25,6 +44,8 @@ const SUB_VIEW_REGEX = '{{%(?: )?view ([a-z][a-zA-Z0-9]*?)(?: )?%}}';
  * @package Template
  */
 abstract class View {
+
+    private $settings;
 
     /**
      * @var string Path to the template relative to the templates folder.
@@ -41,8 +62,20 @@ abstract class View {
      */
     protected $views = [];
 
+    public function __construct(ViewSettings $settings) {
+        $this->settings = $settings;
+    }
+
+    public function getVariable($name) {
+        return $this->variables[$name];
+    }
+
     public function setVariable($name, $value) {
         $this->variables[$name] = $value;
+    }
+
+    public function getView($name) {
+        return $this->views[$name];
     }
 
     public function setView($name, View $view) {
@@ -59,22 +92,62 @@ abstract class View {
         }
         $output = file_get_contents('templates/'.$this->template);
 
-        preg_match_all(SUB_VIEW_REGEX, $output, $subViewMatches, PREG_SET_ORDER);
+        return $this->renderPartial($output);
+    }
 
-        foreach($subViewMatches as $match) {
-            $output = str_replace($match[0], $this->views[$match[1]]->render(), $output);
+    /**
+     * @param string $string
+     * @return string[]
+     */
+    private function extractArguments($string) {
+        $arguments = [];
+        foreach(preg_split('/ +/', trim($string)) as $argument) {
+            $arguments[] = $argument;
         }
 
-        preg_match_all(VARIABLE_REGEX, $output, $variableMatches, PREG_SET_ORDER);
+        return $arguments;
+    }
+
+    /**
+     * @param string $partial A part of a template.
+     * @returns string A rendered version of that part.
+     */
+    private function renderPartial($partial) {
+
+        preg_match_all(BLOCK_DIRECTIVE_REGEX, $partial, $blockDirectiveMatches, PREG_SET_ORDER);
+
+        foreach($blockDirectiveMatches as $match) {
+            $name = $match[2];
+            $arguments = $this->extractArguments($match[3]);
+            $body = $match[4];
+
+            $rendered = $this->settings->blockDirectives[$name]->render($this, $arguments, $body);
+            $rendered = $this->renderPartial($rendered);
+
+            $partial = str_replace($match[0], $rendered, $partial);
+        }
+
+        preg_match_all(INLINE_DIRECTIVE_REGEX, $partial, $inlineDirectiveMatches, PREG_SET_ORDER);
+
+        foreach($inlineDirectiveMatches as $match) {
+            $name = $match[1];
+            $arguments = $this->extractArguments($match[2]);
+
+            $rendered = $this->settings->inlineDirectives[$name]->render($this, $arguments);
+
+            $partial = str_replace($match[0], $rendered, $partial);
+        }
+
+        preg_match_all(VARIABLE_REGEX, $partial, $variableMatches, PREG_SET_ORDER);
 
         foreach($variableMatches as $match) {
             $variable = $this->variables[$match[1]];
             $variable = str_replace('<', '&lt;', $variable);
             $variable = str_replace('>', '&gt;', $variable);
             $variable = str_replace('"', '&quot;', $variable);
-            $output = str_replace($match[0], $variable, $output);
+            $partial = str_replace($match[0], $variable, $partial);
         }
 
-        return $output;
+        return $partial;
     }
 }

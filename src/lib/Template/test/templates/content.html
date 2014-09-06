@@ -1,1 +1,6 @@
-{{ message }}
+{? if hasName:
+    Hello, {{ name }}!
+?}
+{? if !hasName:
+    Hello, World!
+?}
