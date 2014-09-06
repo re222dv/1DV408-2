@@ -87,7 +87,7 @@ abstract class View {
      * @throws \Exception If the template file doesn't exist.
      */
     public function render() {
-        if(!is_file('templates/'.$this->template)) {
+        if (!is_file('templates/'.$this->template)) {
             throw new \Exception("Template file '$this->template' don't exists");
         }
         $output = file_get_contents('templates/'.$this->template);
@@ -101,11 +101,24 @@ abstract class View {
      */
     private function extractArguments($string) {
         $arguments = [];
-        foreach(preg_split('/ +/', trim($string)) as $argument) {
+        foreach (preg_split('/ +/', trim($string)) as $argument) {
             $arguments[] = $argument;
         }
 
         return $arguments;
+    }
+
+    /**
+     * @param string $string A possibly unsafe string
+     * @returns string A string that is safe inside HTML if double quotes are
+     *                 used when placing in an attributes value.
+     */
+    private function htmlEscape($string) {
+        $string = str_replace('<', '&lt;', $string);
+        $string = str_replace('>', '&gt;', $string);
+        $string = str_replace('"', '&quot;', $string);
+
+        return $string;
     }
 
     /**
@@ -116,7 +129,7 @@ abstract class View {
 
         preg_match_all(BLOCK_DIRECTIVE_REGEX, $partial, $blockDirectiveMatches, PREG_SET_ORDER);
 
-        foreach($blockDirectiveMatches as $match) {
+        foreach ($blockDirectiveMatches as $match) {
             $name = $match[2];
             $arguments = $this->extractArguments($match[3]);
             $body = $match[4];
@@ -129,7 +142,7 @@ abstract class View {
 
         preg_match_all(INLINE_DIRECTIVE_REGEX, $partial, $inlineDirectiveMatches, PREG_SET_ORDER);
 
-        foreach($inlineDirectiveMatches as $match) {
+        foreach ($inlineDirectiveMatches as $match) {
             $name = $match[1];
             $arguments = $this->extractArguments($match[2]);
 
@@ -140,11 +153,9 @@ abstract class View {
 
         preg_match_all(VARIABLE_REGEX, $partial, $variableMatches, PREG_SET_ORDER);
 
-        foreach($variableMatches as $match) {
+        foreach ($variableMatches as $match) {
             $variable = $this->variables[$match[1]];
-            $variable = str_replace('<', '&lt;', $variable);
-            $variable = str_replace('>', '&gt;', $variable);
-            $variable = str_replace('"', '&quot;', $variable);
+            $variable = $this->htmlEscape($variable);
             $partial = str_replace($match[0], $variable, $partial);
         }
 

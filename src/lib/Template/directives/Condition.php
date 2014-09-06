@@ -10,9 +10,9 @@ use Template\View;
 class Condition extends BlockDirective {
 
     /**
-     * @param View $view The View this directive is rendered in.
+     * @param View $view       The View this directive is rendered in.
      * @param array $arguments All arguments specified in the template.
-     * @param string $body The body of this template.
+     * @param string $body     The body of this template.
      * @throws \InvalidArgumentException If more or less than one argument specified.
      * @return string Return a rendered version of this directive.
      */
