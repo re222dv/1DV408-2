@@ -87,10 +87,10 @@ abstract class View {
      * @throws \Exception If the template file doesn't exist.
      */
     public function render() {
-        if (!is_file('templates/'.$this->template)) {
+        if (!is_file($this->settings->templatePath.$this->template)) {
             throw new \Exception("Template file '$this->template' don't exists");
         }
-        $output = file_get_contents('templates/'.$this->template);
+        $output = file_get_contents($this->settings->templatePath.$this->template);
 
         return $this->renderPartial($output);
     }

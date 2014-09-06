@@ -17,6 +17,8 @@ class ViewSettings {
      */
     public $inlineDirectives;
 
+    public $templatePath = 'templates/';
+
     public function __construct() {
         $this->blockDirectives = [
             'if' => new directives\Condition(),
