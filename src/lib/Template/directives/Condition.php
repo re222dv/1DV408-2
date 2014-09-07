@@ -4,7 +4,6 @@ namespace Template\directives;
 
 require_once('Directive.php');
 
-use Template\BlockDirective;
 use Template\View;
 
 class Condition extends BlockDirective {

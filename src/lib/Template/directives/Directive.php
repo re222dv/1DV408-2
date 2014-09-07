@@ -1,6 +1,8 @@
 <?php
 
-namespace Template;
+namespace Template\directives;
+
+use Template\View;
 
 /**
  * A block directive should be used for functions that require an inline

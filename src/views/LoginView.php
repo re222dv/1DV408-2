@@ -2,7 +2,7 @@
 
 namespace View;
 
-require_once('src/lib/Template/template.php');
+require_once('src/loginSystem.php');
 
 use Template\View;
 
