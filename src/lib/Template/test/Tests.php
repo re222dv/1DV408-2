@@ -48,7 +48,7 @@ class Tests extends \PHPUnit_Framework_TestCase {
         $this->viewSettings = new ViewSettings();
     }
 
-    public function test_render() {
+    public function testRender() {
         global $renderedPage;
         $page = new Layout($this->viewSettings, new Content($this->viewSettings));
         $this->assertEquals($renderedPage, $page->render());
@@ -58,7 +58,7 @@ class Tests extends \PHPUnit_Framework_TestCase {
      * @expectedException \Exception
      * @expectedExceptionMessage Template file '' don't exists
      */
-    public function test_throw_when_template_not_set() {
+    public function testThrowWhenTemplateNotSet() {
         $page = new NoTemplate($this->viewSettings);
         $page->render();
     }
@@ -67,12 +67,12 @@ class Tests extends \PHPUnit_Framework_TestCase {
      * @expectedException \Exception
      * @expectedExceptionMessage Template file 'not-found.html' don't exists
      */
-    public function test_throw_when_template_not_found() {
+    public function testThrowWhenTemplateNotFound() {
         $page = new NotFoundTemplate($this->viewSettings);
         $page->render();
     }
 
-    public function test_variable_insertion_is_xss_proof() {
+    public function testVariableInsertionIsXssProof() {
         global $renderedPageXSS;
         $content = new Content($this->viewSettings);
         $content->setVariable('name',

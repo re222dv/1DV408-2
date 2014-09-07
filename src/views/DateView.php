@@ -9,10 +9,10 @@ use Template\View;
 use Template\ViewSettings;
 
 class DateView extends View {
-    private static $DAYS = [
+    private static $days = [
         'Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'
     ];
-    private static $MONTHS = [
+    private static $months = [
         'Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli',
         'Augusti', 'September', 'Oktober', 'November', 'December'
     ];
@@ -23,9 +23,9 @@ class DateView extends View {
         parent::__construct($settings);
 
         $this->variables = [
-            'day' => DateView::$DAYS[date('w')],
+            'day' => DateView::$days[date('w')],
             'dayNumber' => date('j'),
-            'month' => DateView::$MONTHS[date('n') - 1],
+            'month' => DateView::$months[date('n') - 1],
             'year' => date('o'),
             'time' => date('H:i:s'),
         ];

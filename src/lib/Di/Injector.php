@@ -21,8 +21,15 @@ namespace Di;
  *  $foo = $injector->get('Foo');
  */
 class Injector {
+    /**
+     * @var array An assoc array with class => instance of all currently instantiated objects
+     */
     private $instances = [];
-    private $instancing = [];
+    /**
+     * @var array All classes that are currently instantiating so that circular dependencies can
+     *            be detected.
+     */
+    private $instantiating = [];
 
     /**
      * Instances a new object from the specified class.
@@ -32,10 +39,10 @@ class Injector {
      * @return object
      */
     private function instanceClass($class) {
-        if (in_array($class, $this->instancing)) {
+        if (in_array($class, $this->instantiating)) {
             throw new \Exception('Circular dependency detected');
         }
-        $this->instancing[] = $class;
+        $this->instantiating[] = $class;
 
         $reflection = new \ReflectionClass($class);
         $constructor = $reflection->getConstructor();
@@ -51,7 +58,7 @@ class Injector {
             $instance = $reflection->newInstanceWithoutConstructor();
         }
         $this->instances[$class] = $instance;
-        $this->instancing = [];
+        $this->instantiating = [];
 
         return $instance;
     }
