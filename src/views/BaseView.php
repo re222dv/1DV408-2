@@ -2,8 +2,7 @@
 
 namespace View;
 
-require_once('src/lib/Template/View.php');
-require_once('src/lib/Template/ViewSettings.php');
+require_once('src/lib/Template/template.php');
 require_once('src/views/DateView.php');
 
 use Template\View;

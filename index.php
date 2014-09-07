@@ -1,14 +1,15 @@
 <?php
 
-require_once('src/lib/Template/ViewSettings.php');
+require_once('src/lib/Di/di.php');
+require_once('src/lib/Template/template.php');
 require_once('src/views/BaseView.php');
 require_once('src/views/LoginView.php');
 
-$viewSettings = new \Template\ViewSettings();
-$viewSettings->templatePath = 'src/templates/';
+$injector = new \Di\Injector();
+$injector->get('Template\ViewSettings')->templatePath = 'src/templates/';
 
-$baseView = new \View\BaseView($viewSettings);
-$loginView = new \View\LoginView($viewSettings);
+$baseView = $injector->get('\View\BaseView');
+$loginView = $injector->get('\View\LoginView');
 
 $baseView->setView('content', $loginView);
 
