@@ -8,14 +8,14 @@
     <fieldset>
         <legend>Login - Skriv in användarnamn och lösenord</legend>
         <label>
-            Namn: <input name="username" />
+            Namn: <input {% model username %} />
         </label>
         <label>
-            Lösenord: <input type="password" name="password" />
+            Lösenord: <input type="password" {% model password %} />
         </label>
         <label>
-            Håll mig inloggad: <input type="checkbox" name="rememberMe" />
+            Håll mig inloggad: <input type="checkbox" {% model rememberMe checkbox %} />
         </label>
-        <input type="submit" name="submit" value="Logga in" />
+        <input type="submit" {% model submit %} value="Logga in" />
     </fieldset>
 </form>

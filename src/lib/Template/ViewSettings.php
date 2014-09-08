@@ -4,6 +4,7 @@ namespace Template;
 
 require_once('directives/Condition.php');
 require_once('directives/InjectView.php');
+require_once('directives/Model.php');
 require_once('directives/View.php');
 
 class ViewSettings {
@@ -21,13 +22,14 @@ class ViewSettings {
     public $templatePath = 'templates/';
 
     public function __construct(directives\Condition $condition, directives\InjectView $injectView,
-                                directives\View $view) {
+                                directives\Model $model, directives\View $view) {
         $this->blockDirectives = [
             'if' => $condition,
         ];
 
         $this->inlineDirectives = [
             'injectView' => $injectView,
+            'model' => $model,
             'view' => $view,
         ];
     }

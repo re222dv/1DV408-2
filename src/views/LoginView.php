@@ -5,6 +5,7 @@ namespace View;
 require_once('src/loginSystem.php');
 
 use Model\User;
+use Template\directives\Model;
 use Template\View;
 use Template\ViewSettings;
 
@@ -15,8 +16,14 @@ class LoginView extends View {
      */
     private $user;
 
-    public function __construct(User $user, ViewSettings $viewSettings) {
+    public function __construct(Model $model, User $user,
+                                ViewSettings $viewSettings) {
         parent::__construct($viewSettings);
+
+        $model->registerModel($this, 'username');
+        $model->registerModel($this, 'password');
+        $model->registerModel($this, 'rememberMe');
+        $model->registerModel($this, 'submit');
 
         $this->user =$user;
     }
@@ -25,21 +32,21 @@ class LoginView extends View {
      * @return string
      */
     public function getUsername() {
-        return $_POST['username'];
+        return $this->variables['username'];
     }
 
     /**
      * @return string
      */
     public function getPassword() {
-        return $_POST['password'];
+        return $this->variables['password'];
     }
 
     /**
      * @return bool
      */
     public function isAuthenticatingUser() {
-        return isset($_POST['submit']);
+        return isset($this->variables['submit']);
     }
 
     public function onRender() {
