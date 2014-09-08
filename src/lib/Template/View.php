@@ -83,10 +83,17 @@ abstract class View {
     }
 
     /**
+     * Called on render before the template is actually rendered
+     */
+    public function onRender() {}
+
+    /**
      * @returns string Rendered HTML.
      * @throws \Exception If the template file doesn't exist.
      */
     public function render() {
+        $this->onRender();
+
         if (!is_file($this->settings->templatePath.$this->template)) {
             throw new \Exception("Template file '$this->template' don't exists");
         }
