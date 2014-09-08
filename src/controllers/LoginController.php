@@ -1,11 +1,11 @@
 <?php
 
-namespace controller;
+namespace controllers;
 
 require_once('src/loginSystem.php');
 
-use Model\User;
-use View\LoginView;
+use models\User;
+use views\LoginView;
 
 class LoginController {
     private $user;

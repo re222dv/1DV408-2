@@ -1,10 +1,10 @@
 <?php
 
-namespace View;
+namespace views;
 
 require_once('src/loginSystem.php');
 
-use Model\User;
+use models\User;
 use Template\directives\Model;
 use Template\View;
 use Template\ViewSettings;

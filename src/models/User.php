@@ -1,6 +1,6 @@
 <?php
 
-namespace model;
+namespace models;
 
 require_once('src/loginSystem.php');
 
