@@ -7,8 +7,8 @@ $injector->bindToInstance('Di\Injector', $injector);
 $injector->get('Template\ViewSettings')->templatePath = 'src/templates/';
 
 $baseView = $injector->get('\View\BaseView');
-$loginView = $injector->get('\View\LoginView');
+$loginController = $injector->get('\controller\loginController');
 
-$baseView->setView('content', $loginView);
+$baseView->setView('content', $loginController->render());
 
 echo $baseView->render();
