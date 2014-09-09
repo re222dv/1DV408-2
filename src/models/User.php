@@ -4,10 +4,21 @@ namespace models;
 
 require_once('src/loginSystem.php');
 
+use services\SessionService;
+
 class User {
+    private static $sessionKey = 'User::username';
+    /**
+     * @var SessionService
+     */
+    private $session;
+
     private $username = 'Admin';
     private $password = 'password';
-    private $loggedIn = false;
+
+    public function __construct(SessionService $session) {
+        $this->session = $session;
+    }
 
     /**
      * @return string
@@ -20,7 +31,7 @@ class User {
      * @return bool True if the user is logged in
      */
     public function isLoggedIn() {
-        return $this->loggedIn;
+        return $this->session->has(self::$sessionKey);
     }
 
     /**
@@ -29,12 +40,16 @@ class User {
      * @return bool
      */
     public function logIn($username, $password) {
-        if ($username === $this->username &&
+        if ($username === $this->username and
             $password === $this->password) {
-            $this->loggedIn = true;
+            $this->session->set(self::$sessionKey, $username);
             return true;
         }
 
         return false;
+    }
+
+    public function logOut() {
+        $this->session->remove(self::$sessionKey);
     }
 }

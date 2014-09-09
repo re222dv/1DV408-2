@@ -6,24 +6,43 @@ require_once('src/loginSystem.php');
 
 use models\User;
 use views\LoginView;
+use views\UserView;
 
 class LoginController {
     private $user;
-    private $view;
+    /**
+     * @var LoginView
+     */
+    private $loginView;
+    /**
+     * @var UserView
+     */
+    private $userView;
 
-    public function __construct(LoginView $view, User $user) {
-        $this->view =$view;
-        $this->user =$user;
+    public function __construct(LoginView $loginView, UserView $userView, User $user) {
+        $this->loginView = $loginView;
+        $this->userView = $userView;
+        $this->user = $user;
     }
 
     public function render() {
-        if ($this->view->isAuthenticatingUser()) {
-            $username = $this->view->getUsername();
-            $password = $this->view->getPassword();
+        if ($this->user->isLoggedIn()) {
+            if ($this->userView->isAuthenticatingUser()) {
+                $this->user->logOut();
+            }
+        } else {
+            if ($this->loginView->isAuthenticatingUser()) {
+                $username = $this->loginView->getUsername();
+                $password = $this->loginView->getPassword();
 
-            $this->user->logIn($username, $password);
+                $this->user->logIn($username, $password);
+            }
         }
 
-        return $this->view;
+        if ($this->user->isLoggedIn()) {
+            return $this->userView;
+        } else {
+            return $this->loginView;
+        }
     }
 }
