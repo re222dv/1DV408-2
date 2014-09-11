@@ -47,8 +47,4 @@ class LoginView extends View {
     public function isAuthenticatingUser() {
         return isset($this->variables['loginButton']);
     }
-
-    public function onRender() {
-        $this->setVariable('isLoggedIn', $this->user->isLoggedIn());
-    }
 }
