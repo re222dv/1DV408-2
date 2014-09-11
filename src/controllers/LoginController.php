@@ -26,9 +26,14 @@ class LoginController {
     }
 
     public function render() {
+        if ($this->loginView->isUserRemembered()) {
+            $this->user->logInWithKey($this->loginView->getRememberedKey());
+        }
+
         if ($this->user->isLoggedIn()) {
             if ($this->userView->isAuthenticatingUser()) {
                 $this->user->logOut();
+                $this->loginView->forgetUser();
                 $this->loginView->setHaveLoggedOut();
             }
         } else {
@@ -37,6 +42,9 @@ class LoginController {
                 $password = $this->loginView->getPassword();
 
                 if ($this->user->logIn($username, $password)) {
+                    if ($this->loginView->shouldUserBeRemembered()) {
+                        $this->loginView->rememberUser();
+                    }
                     $this->userView->setLoginSucceeded();
                 } else {
                     $this->loginView->setLoginError();
