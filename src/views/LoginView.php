@@ -47,4 +47,29 @@ class LoginView extends View {
     public function isAuthenticatingUser() {
         return isset($this->variables['loginButton']);
     }
+
+    /**
+     * @param string $error
+     */
+    private function setError($error) {
+        $this->setVariable('error', $error);
+    }
+
+    public function setLoginError() {
+        $this->setError('Felaktigt användarnamn och/eller lösenord');
+    }
+
+    public function setHaveLoggedOut() {
+        $this->setVariable('haveLoggedOut', true);
+    }
+
+    public function onRender() {
+        if ($this->isAuthenticatingUser()) {
+            if (empty($this->getUsername())) {
+                $this->setError('Användarnamn saknas');
+            } elseif (empty($this->getPassword())) {
+                $this->setError('Lösenord saknas');
+            }
+        }
+    }
 }

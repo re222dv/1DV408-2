@@ -31,6 +31,10 @@ class UserView extends View {
         return isset($this->variables['logoutButton']);
     }
 
+    public function setLoginSucceeded() {
+        $this->setVariable('loginSucceeded', true);
+    }
+
     public function onRender() {
         $this->setVariable('username', $this->user->getUsername());
     }

@@ -1,4 +1,9 @@
 <h2>{{ username }} är inloggad</h2>
+{? if loginSucceeded:
+    <p>
+        Inloggning lyckades
+    </p>
+?}
 <form method="post">
     <input type="submit" {% model logoutButton %} value="Logga ut" />
 </form>

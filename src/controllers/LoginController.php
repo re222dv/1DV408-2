@@ -29,13 +29,18 @@ class LoginController {
         if ($this->user->isLoggedIn()) {
             if ($this->userView->isAuthenticatingUser()) {
                 $this->user->logOut();
+                $this->loginView->setHaveLoggedOut();
             }
         } else {
             if ($this->loginView->isAuthenticatingUser()) {
                 $username = $this->loginView->getUsername();
                 $password = $this->loginView->getPassword();
 
-                $this->user->logIn($username, $password);
+                if ($this->user->logIn($username, $password)) {
+                    $this->userView->setLoginSucceeded();
+                } else {
+                    $this->loginView->setLoginError();
+                }
             }
         }
 

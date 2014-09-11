@@ -1,7 +1,17 @@
 <h2>Ej Inloggad</h2>
+{? if haveLoggedOut:
+    <p>
+        Du har nu loggat ut
+    </p>
+?}
 <form method="post">
     <fieldset>
         <legend>Login - Skriv in användarnamn och lösenord</legend>
+        {? if error:
+            <p>
+                {{ error }}
+            </p>
+        ?}
         <label>
             Namn: <input {% model username %} />
         </label>
