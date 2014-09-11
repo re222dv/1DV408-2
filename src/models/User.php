@@ -14,7 +14,7 @@ class User {
     private $session;
 
     private $username = 'Admin';
-    private $password = 'password';
+    private $password = 'Password';
 
     public function __construct(SessionService $session) {
         $this->session = $session;
