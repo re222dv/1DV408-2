@@ -18,9 +18,7 @@ class CookieService {
     }
 
     public function set($key, $value) {
-        $cookeSaveTime = time() + 60 * 60 * 24 * 7; // 7 days
-
-        setcookie($key, $value, $cookeSaveTime);
+        setcookie($key, $value, strtotime('+7 days'));
         $_COOKIE[$key] = $value;
     }
 
