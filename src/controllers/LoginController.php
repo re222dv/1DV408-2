@@ -26,8 +26,13 @@ class LoginController {
     }
 
     public function render() {
-        if ($this->loginView->isUserRemembered()) {
-            $this->user->logInWithKey($this->loginView->getRememberedKey());
+        if (!$this->user->isLoggedIn() and $this->loginView->isUserRemembered()) {
+            if ($this->user->logInWithKey($this->loginView->getRememberedKey())) {
+                $this->userView->setLoginSucceededRemembered();
+            } else {
+                $this->loginView->forgetUser();
+                $this->loginView->setLoginErrorRemembered();
+            }
         }
 
         if ($this->user->isLoggedIn()) {

@@ -88,6 +88,10 @@ class LoginView extends View {
         $this->setError('Felaktigt användarnamn och/eller lösenord');
     }
 
+    public function setLoginErrorRemembered() {
+        $this->setError('Felaktig information i cookie');
+    }
+
     public function setHaveLoggedOut() {
         $this->setVariable('haveLoggedOut', true);
     }

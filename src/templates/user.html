@@ -1,7 +1,7 @@
 <h2>{{ username }} är inloggad</h2>
-{? if loginSucceeded:
+{? if status:
     <p>
-        Inloggning lyckades
+        {{ status }}
     </p>
 ?}
 <form method="post">
