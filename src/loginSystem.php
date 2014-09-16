@@ -10,4 +10,5 @@ require_once('src/views/BaseView.php');
 require_once('src/views/DateView.php');
 require_once('src/views/LoginView.php');
 require_once('src/views/UserView.php');
+require_once('src/viewServices/ClientService.php');
 require_once('src/viewServices/CookieService.php');

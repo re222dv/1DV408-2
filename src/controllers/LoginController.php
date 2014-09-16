@@ -5,6 +5,8 @@ namespace controllers;
 require_once('src/loginSystem.php');
 
 use models\User;
+use services\ClientService;
+use services\SessionService;
 use views\LoginView;
 use views\UserView;
 
@@ -19,10 +21,13 @@ class LoginController {
      */
     private $userView;
 
-    public function __construct(LoginView $loginView, UserView $userView, User $user) {
+    public function __construct(LoginView $loginView, UserView $userView, User $user,
+                                ClientService $clientService, SessionService $sessionService) {
         $this->loginView = $loginView;
         $this->userView = $userView;
         $this->user = $user;
+
+        $sessionService->setClientIdentifier($clientService->getClientIdentifier());
     }
 
     public function render() {

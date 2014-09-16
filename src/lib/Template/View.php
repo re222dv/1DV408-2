@@ -67,7 +67,11 @@ abstract class View {
     }
 
     public function getVariable($name) {
-        return $this->variables[$name];
+        if (isset($this->variables[$name])) {
+            return $this->variables[$name];
+        }
+
+        return null;
     }
 
     public function setVariable($name, $value) {
