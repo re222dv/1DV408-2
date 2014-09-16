@@ -30,7 +30,7 @@ class LoginController {
         $sessionService->setClientIdentifier($clientService->getClientIdentifier());
     }
 
-    public function render() {
+    private function handleInput() {
         if (!$this->user->isLoggedIn() and $this->loginView->isUserRemembered()) {
             if ($this->user->logInWithKey($this->loginView->getRememberedKey())) {
                 $this->userView->setLoginSucceededRemembered();
@@ -61,11 +61,18 @@ class LoginController {
                 }
             }
         }
+    }
 
+    private function handleOutput() {
         if ($this->user->isLoggedIn()) {
             return $this->userView;
         } else {
             return $this->loginView;
         }
+    }
+
+    public function render() {
+        $this->handleInput();
+        return $this->handleOutput();
     }
 }
