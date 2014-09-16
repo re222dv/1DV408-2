@@ -102,9 +102,11 @@ class LoginView extends View {
 
     public function onRender() {
         if ($this->isAuthenticatingUser()) {
-            if (empty($this->getUsername())) {
+            $username = $this->getUsername();
+            $password = $this->getPassword();
+            if (empty($username)) {
                 $this->setError('Användarnamn saknas');
-            } elseif (empty($this->getPassword())) {
+            } elseif (empty($password)) {
                 $this->setError('Lösenord saknas');
             }
         }
