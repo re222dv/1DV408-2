@@ -5,12 +5,20 @@ namespace services;
 require_once('src/loginSystem.php');
 
 class CookieService {
+    private $fileService;
+
+    public function __construct(FileService $fileService) {
+        $this->fileService = $fileService;
+    }
 
     public function has($key) {
         return isset($_COOKIE[$key]);
     }
 
     public function get($key) {
+        if ($this->fileService->get() < time()) {
+            $this->remove($key);
+        }
         if ($this->has($key)) {
             return $_COOKIE[$key];
         }
@@ -18,7 +26,9 @@ class CookieService {
     }
 
     public function set($key, $value) {
-        setcookie($key, $value, strtotime('+7 days'));
+        $time = strtotime('+1 minutes');
+        $this->fileService->set($time);
+        setcookie($key, $value, $time);
         $_COOKIE[$key] = $value;
     }
 
