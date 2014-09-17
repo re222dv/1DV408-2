@@ -12,15 +12,21 @@ use Template\ViewSettings;
 class UserView extends View {
     protected $template = 'user.html';
     /**
+     * @var BaseView
+     */
+    private $baseView;
+    /**
      * @var User
      */
     private $user;
 
-    public function __construct(Model $model, User $user, ViewSettings $viewSettings) {
+    public function __construct(BaseView $baseView, Model $model, User $user,
+                                ViewSettings $viewSettings) {
         parent::__construct($viewSettings);
 
         $model->registerModel($this, 'logoutButton');
 
+        $this->baseView = $baseView;
         $this->user =$user;
     }
 
@@ -40,6 +46,8 @@ class UserView extends View {
     }
 
     public function onRender() {
+        $this->baseView->setTitle('Inloggad');
+
         $this->setVariable('username', $this->user->getUsername());
     }
 }

@@ -14,6 +14,10 @@ class LoginView extends View {
     private static $cookieKey = 'LoginView::username';
     protected $template = 'login.html';
     /**
+     * @var BaseView
+     */
+    private $baseView;
+    /**
      * @var CookieService
      */
     private $cookie;
@@ -22,7 +26,8 @@ class LoginView extends View {
      */
     private $user;
 
-    public function __construct(CookieService $cookie, Model $model, User $user, ViewSettings $viewSettings) {
+    public function __construct(BaseView $baseView, CookieService $cookie, Model $model, User $user,
+                                ViewSettings $viewSettings) {
         parent::__construct($viewSettings);
 
         $model->registerModel($this, 'username');
@@ -30,6 +35,7 @@ class LoginView extends View {
         $model->registerModel($this, 'rememberMe');
         $model->registerModel($this, 'loginButton');
 
+        $this->baseView = $baseView;
         $this->cookie = $cookie;
         $this->user = $user;
     }
@@ -101,6 +107,8 @@ class LoginView extends View {
     }
 
     public function onRender() {
+        $this->baseView->setTitle('Inte inloggad');
+
         if ($this->isAuthenticatingUser()) {
             $username = $this->getUsername();
             $password = $this->getPassword();

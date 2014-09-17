@@ -8,4 +8,8 @@ use Template\View;
 
 class BaseView extends View {
     protected $template = 'base.html';
+
+    public function setTitle($title) {
+        $this->setVariable('title', $title);
+    }
 }
