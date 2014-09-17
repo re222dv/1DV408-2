@@ -6,7 +6,7 @@ require_once('Directive.php');
 
 use Template\View;
 
-class Condition extends BlockDirective {
+class IfDirective extends BlockDirective {
 
     /**
      * @param View $view       The View this directive is rendered in.

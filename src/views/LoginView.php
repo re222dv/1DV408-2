@@ -6,7 +6,7 @@ require_once('src/loginSystem.php');
 
 use models\User;
 use services\CookieService;
-use Template\directives\Model;
+use Template\directives\InputDirective;
 use Template\View;
 use Template\ViewSettings;
 
@@ -26,14 +26,15 @@ class LoginView extends View {
      */
     private $user;
 
-    public function __construct(BaseView $baseView, CookieService $cookie, Model $model, User $user,
+    public function __construct(BaseView $baseView, CookieService $cookie,
+                                InputDirective $inputDirective, User $user,
                                 ViewSettings $viewSettings) {
         parent::__construct($viewSettings);
 
-        $model->registerModel($this, 'username');
-        $model->registerModel($this, 'password');
-        $model->registerModel($this, 'rememberMe');
-        $model->registerModel($this, 'loginButton');
+        $inputDirective->registerInput($this, 'username');
+        $inputDirective->registerInput($this, 'password');
+        $inputDirective->registerInput($this, 'rememberMe');
+        $inputDirective->registerInput($this, 'loginButton');
 
         $this->baseView = $baseView;
         $this->cookie = $cookie;

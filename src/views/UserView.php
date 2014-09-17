@@ -5,7 +5,7 @@ namespace views;
 require_once('src/loginSystem.php');
 
 use models\User;
-use Template\directives\Model;
+use Template\directives\InputDirective;
 use Template\View;
 use Template\ViewSettings;
 
@@ -20,11 +20,11 @@ class UserView extends View {
      */
     private $user;
 
-    public function __construct(BaseView $baseView, Model $model, User $user,
+    public function __construct(BaseView $baseView, InputDirective $inputDirective, User $user,
                                 ViewSettings $viewSettings) {
         parent::__construct($viewSettings);
 
-        $model->registerModel($this, 'logoutButton');
+        $inputDirective->registerInput($this, 'logoutButton');
 
         $this->baseView = $baseView;
         $this->user =$user;

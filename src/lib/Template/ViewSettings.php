@@ -2,10 +2,10 @@
 
 namespace Template;
 
-require_once('directives/Condition.php');
-require_once('directives/InjectView.php');
-require_once('directives/Model.php');
-require_once('directives/View.php');
+require_once('directives/IfDirective.php');
+require_once('directives/InjectViewDirective.php');
+require_once('directives/InputDirective.php');
+require_once('directives/ViewDirective.php');
 
 class ViewSettings {
     /**
@@ -21,15 +21,17 @@ class ViewSettings {
 
     public $templatePath = 'templates/';
 
-    public function __construct(directives\Condition $condition, directives\InjectView $injectView,
-                                directives\Model $model, directives\View $view) {
+    public function __construct(directives\IfDirective $if,
+                                directives\InjectViewDirective $injectView,
+                                directives\InputDirective $input,
+                                directives\ViewDirective $view) {
         $this->blockDirectives = [
-            'if' => $condition,
+            'if' => $if,
         ];
 
         $this->inlineDirectives = [
             'injectView' => $injectView,
-            'model' => $model,
+            'input' => $input,
             'view' => $view,
         ];
     }

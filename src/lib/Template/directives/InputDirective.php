@@ -6,10 +6,10 @@ use Template\View;
 
 require_once('Directive.php');
 
-class Model extends InlineDirective {
+class InputDirective extends InlineDirective {
     private $registeredModels = [];
 
-    function registerModel(View $view, $modelName) {
+    function registerInput(View $view, $modelName) {
         $this->registeredModels[] = $modelName;
 
         if (isset($_POST[$modelName])) {
@@ -30,19 +30,19 @@ class Model extends InlineDirective {
             throw new \InvalidArgumentException('Exactly one variable name must be specified,'
                 .'with one optional flag');
         }
-        $modelName = $arguments[0];
+        $inputName = $arguments[0];
 
-        if (!in_array($modelName, $this->registeredModels)) {
-            throw new \Exception("Model $modelName have not been registered");
+        if (!in_array($inputName, $this->registeredModels)) {
+            throw new \Exception("InputDirective $inputName have not been registered");
         }
 
-        if (isset($_POST[$modelName])) {
-            if (in_array('checkbox', $flags) && $_POST[$modelName] === 'on') {
-                return 'name="'.$modelName.'" checked';
+        if (isset($_POST[$inputName])) {
+            if (in_array('checkbox', $flags) && $_POST[$inputName] === 'on') {
+                return 'name="'.$inputName.'" checked';
             }
-            return 'name="'.$modelName.'" value="{{ '.$modelName.' }}"';
+            return 'name="'.$inputName.'" value="{{ '.$inputName.' }}"';
         }
 
-        return 'name="'.$modelName.'"';
+        return 'name="'.$inputName.'"';
     }
 }

@@ -13,14 +13,14 @@
             </p>
         ?}
         <label>
-            Namn: <input {% model username %} />
+            Namn: <input {% input username %} />
         </label>
         <label>
-            Lösenord: <input type="password" {% model password %} />
+            Lösenord: <input type="password" {% input password %} />
         </label>
         <label>
-            Håll mig inloggad: <input type="checkbox" {% model rememberMe checkbox %} />
+            Håll mig inloggad: <input type="checkbox" {% input rememberMe checkbox %} />
         </label>
-        <input type="submit" {% model loginButton %} value="Logga in" />
+        <input type="submit" {% input loginButton %} value="Logga in" />
     </fieldset>
 </form>

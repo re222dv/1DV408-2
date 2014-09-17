@@ -7,7 +7,7 @@ require_once('Directive.php');
 use Di\Injector;
 use Template\View;
 
-class InjectView extends InlineDirective {
+class InjectViewDirective extends InlineDirective {
     /**
      * @var Injector
      */
@@ -18,8 +18,8 @@ class InjectView extends InlineDirective {
     }
 
     /**
-     * @param View $view The View this directive is rendered in.
-     * @param array $arguments     All arguments specified in the template.
+     * @param View $view       The View this directive is rendered in.
+     * @param array $arguments All arguments specified in the template.
      * @throws \InvalidArgumentException If more or less than one argument specified.
      * @return string Return a rendered version of this directive.
      */
