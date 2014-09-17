@@ -54,8 +54,10 @@ class LoginController {
                 if ($this->user->logIn($username, $password)) {
                     if ($this->loginView->shouldUserBeRemembered()) {
                         $this->loginView->rememberUser();
+                        $this->userView->setLoginSucceededRemembering();
+                    } else {
+                        $this->userView->setLoginSucceeded();
                     }
-                    $this->userView->setLoginSucceeded();
                 } else {
                     $this->loginView->setLoginError();
                 }

@@ -41,6 +41,10 @@ class UserView extends View {
         $this->setVariable('status', 'Inloggning lyckades');
     }
 
+    public function setLoginSucceededRemembering() {
+        $this->setVariable('status', 'Inloggning lyckades och vi kommer ihåg dig nästa gång');
+    }
+
     public function setLoginSucceededRemembered() {
         $this->setVariable('status', 'Inloggning lyckades via cookies');
     }
